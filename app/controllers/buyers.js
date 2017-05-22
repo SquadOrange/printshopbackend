@@ -8,6 +8,23 @@ const authenticate = require('./concerns/authenticate');
 const setUser = require('./concerns/set-current-user');
 const setModel = require('./concerns/set-mongoose-model');
 
+const index = (req, res, next) => {
+  Buyer.find()
+    .then(buyers => res.json({
+      buyers: buyers.map((e) =>
+        e.toJSON({ virtuals: true, user: req.user })),
+    }))
+    .catch(next);
+};
+
+const update = (req, res, next) => {
+  delete req.body._owner;  // disallow owner reassignment.
+  req.buyer.update(req.body.buyer)
+    .then(() => res.sendStatus(204))
+    .catch(next);
+};
+
+
 const create = (req, res, next) => {
   let buyer = Object.assign(req.body.buyer, {
     _owner: req.user._id,
@@ -22,7 +39,7 @@ const create = (req, res, next) => {
 }
 
 module.exports = controller({
-  // index,
+  index,
   // show,
   create
   // update,
