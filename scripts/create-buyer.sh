@@ -2,7 +2,7 @@
 
 API="http://localhost:4741"
 URL_PATH="/buyers"
-TOKEN="nme0G9D4O0zlOrXOsrUEzXBeQuvSmLEuCpDvDCzbxWE=--BtK0NphiJt15MCZYMXDHrfO66zrUjnTr/jl3gemH7NE="
+TOKEN="n7y8wHSlCEF6NDJH44h5rkGuxSYcu7yuhhkON+BrU7Y=--iZt/DeTv9pE1cXV9OFFxvbDaM43tpfRl8xqk4ZQ2vIo="
 
 curl "${API}${URL_PATH}" \
  --include \
