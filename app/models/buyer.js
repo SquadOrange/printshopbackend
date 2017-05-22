@@ -38,7 +38,7 @@ const buyerSchema = new mongoose.Schema({
 });
 
 buyerSchema.virtual('cost').get(function length() {
-  return this.quantity * this.print.cost;
+  return this.cart.quantity * 100;
 });
 
 const Buyer = mongoose.model('Buyer', buyerSchema);
