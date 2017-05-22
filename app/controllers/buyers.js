@@ -16,7 +16,7 @@ const create = (req, res, next) => {
     .then(buyer =>
       res.status(201)
         .json({
-          buyer: example.toJSON({ virtuals: true, user: req.user }),
+          buyer: buyer.toJSON({ virtuals: true, user: req.user }),
         }))
     .catch(next);
 }
@@ -26,10 +26,10 @@ module.exports = controller({
   // show,
   create
   // update,
-  // destroy,
+  // destroy
 }, { before: [
-  { method: setUser, only: ['create'] },
-  { method: authenticate, only: ['create'] },
+  { method: setUser, only: ['index', 'show'] },
+  { method: authenticate, except: ['index', 'show'] },
   { method: setModel(Buyer), only: ['show'] },
   { method: setModel(Buyer, { forUser: true }), only: ['update', 'destroy'] },
 ], });
