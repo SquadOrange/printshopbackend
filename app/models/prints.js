@@ -2,25 +2,26 @@
 
 const mongoose = require('mongoose');
 
-const printSchema = new mongoose.Schema({ [
+const printSchema = new mongoose.Schema({
   // 9 of these are created when you make an account, everyone has acces to them.
-   title: {
-     type: String,
-     required: true
-    },
+  title: {
+    type: String,
+    required: true
+  },
   idNum: {
     type: Number, // this is 0 - 8, and the data_id in the dom.
     required: true
   },
-  { price: Number,
+  price: {
+    type: Number,
     required: true
   },
-  {
-    purchased: Boolean,
+  purchased: {
+    type: Boolean,
     required: true,
     default: false
   }
-]})
+})
 // }, {
 //   timestamps: true,
 //   toJSON: {
