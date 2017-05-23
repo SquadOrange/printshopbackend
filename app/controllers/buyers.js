@@ -24,20 +24,23 @@ const update = (req, res, next) => {
 
   let owner = {_owner: req.user._id }
   Buyer.findOne(owner, { cart: { $elemMatch: {idNum: req.body.buyer.cart[0].idNum}}})
-  .then(cart => {
-    console.log(cart)
-    if (cart.cart.length === 0) {
+  .then(object => {
+    console.log('object is', object)
+    if (object.cart.length === 0) {
       req.buyer.update({'$push': {cart: req.body.buyer.cart[0]}})
         .then((buyers) => res.sendStatus(201))
         .then(console.log('Cart newly updated!'))
         .catch(next)
     }
     else {
-      console.log('need to be updated')
+      console.log('need to be updated', object)
     }
   })
 
-
+  // req.buyer.update({'$set': {cart: req.body.buyer.cart[0]}})
+  //   .then((buyers) => res.sendStatus(201))
+  //   .then(console.log('Cart newly updated!'))
+  //   .catch(next)
   // console.log('cart id num is', req.body.buyer.cart[0].idNum)
     // req.buyer.update({'$push': {cart: req.body.buyer.cart[0]}})
     //   .then((buyers) => res.sendStatus(201))
