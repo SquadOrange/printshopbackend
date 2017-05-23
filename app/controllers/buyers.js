@@ -19,11 +19,44 @@ const index = (req, res, next) => {
 
 const update = (req, res, next) => {
   delete req.body._owner;  // disallow owner reassignment.
-  req.buyer.update(req.body.buyer)
-    .then(() => res.sendStatus(204))
-    .catch(next);
+  // const cartId = req.body.buyer._id
+  // console.log('cartId is ', cartId)
+  req.buyer.update({'$push': {cart: req.body.buyer.cart[0]}})
+    .then((buyers) => res.sendStatus(201))
+    .then(() => (console.log('Cart newly updated!')))
+    .catch(next)
 };
 
+// db.students.update(
+//    { name: "joe" },
+//    { $push: { scores: { $each: [ 90, 92, 85 ] } } }
+// )
+
+// const update = (req, res, next) => {
+//   delete req.body._owner  // disallow owner reassignment.
+//
+//   for (let i = 0; i < req.cart.products.length; i++) {
+//     if (lodash.isEqual(req.cart.products[i].sku, req.body.cart.products[0].sku) && req.headers.action === 'add') {
+//       res.sendStatus(404)
+//       return
+//     }
+//   }
+//   if (req.headers.action === 'add') {
+//     req.cart.update({'$push': {products: req.body.cart.products[0]}, '$set': {'totalPrice': req.body.cart.totalPrice}})
+//       .then((carts) => res.sendStatus(201))
+//       .catch(next)
+//   } else if (req.headers.action === 'remove') {
+//     req.cart.update({'$pull': {products: req.body.cart.products[0]}, '$set': {'totalPrice': req.body.cart.totalPrice}})
+//       .then((carts) => res.sendStatus(204))
+//       .catch(next)
+//   } else if (req.headers.action === 'changeQuantity') {
+//     const sku = (req.body.cart.products[0].sku)
+//     req.cart.update({'$pull': {products: {sku: req.body.cart.products[0].sku}}})
+//     .then(req.cart.update({'$push': {products: req.body.cart.products[0]}})
+//     .then(res.sendStatus(201))
+//     .catch(next))
+//   }
+// }
 
 const create = (req, res, next) => {
   let buyer = Object.assign(req.body.buyer, {
