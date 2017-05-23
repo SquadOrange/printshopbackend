@@ -41,8 +41,8 @@ const create = (req, res, next) => {
 module.exports = controller({
   index,
   // show,
-  create
-  // update,
+  create,
+  update
   // destroy
 }, { before: [
   { method: setUser, only: ['index', 'show'] },
