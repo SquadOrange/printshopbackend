@@ -42,7 +42,13 @@ const buyerSchema = new mongoose.Schema({
 });
 
 buyerSchema.virtual('cost').get(function length() {
-  return this.cart.quantity * 100;
+  let total = 0
+  for (let i = 0; i < this.cart.length; i++){
+  if (this.cart[i].purchased = 'false') {
+  total += this.cart[i].quantity
+}
+}
+  return total * 100
 });
 
 const Buyer = mongoose.model('Buyer', buyerSchema);
