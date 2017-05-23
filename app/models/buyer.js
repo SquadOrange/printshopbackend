@@ -6,6 +6,10 @@ const buyerSchema = new mongoose.Schema({
   // all prints attributts are in event.target
   cart: [{
     // need to figure out, contains a qusntity connected to a print reference
+    title: {
+      type: String,
+      required: true
+    },
     quantity: {
       type: Number,
       required: true
