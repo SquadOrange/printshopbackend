@@ -28,25 +28,24 @@ const update = (req, res, next) => {
     console.log('object is', object)
     if (object.cart.length === 0) {
       req.buyer.update({'$push': {cart: req.body.buyer.cart[0]}})
+      .then(response => console.log('after push it says', response))
         .then((buyers) => res.sendStatus(201))
         .then(console.log('Cart newly updated!'))
         .catch(next)
     }
     else {
-      console.log('need to be updated', object)
+      const idNum = object.cart[0].idNum
+      req.buyer.update(
+        {'$pull': {cart: { idNum: req.body.buyer.cart[0].idNum}}}
+      )
+      .then(response => console.log('after pull it says', response))
+      req.buyer.update({'$push': {cart: req.body.buyer.cart[0]}})
+      .then(response => console.log('after push it says', response))
+      .then(res.sendStatus(201))
+      .catch(next)
+      }
     }
-  })
-
-  // req.buyer.update({'$set': {cart: req.body.buyer.cart[0]}})
-  //   .then((buyers) => res.sendStatus(201))
-  //   .then(console.log('Cart newly updated!'))
-  //   .catch(next)
-  // console.log('cart id num is', req.body.buyer.cart[0].idNum)
-    // req.buyer.update({'$push': {cart: req.body.buyer.cart[0]}})
-    //   .then((buyers) => res.sendStatus(201))
-    //   .then(console.log('Cart newly updated!'))
-    //   .catch(next)
-}
+  )}
 
 const create = (req, res, next) => {
   let buyer = Object.assign(req.body.buyer, {
@@ -58,7 +57,7 @@ const create = (req, res, next) => {
         .json({
           buyer: buyer.toJSON({ virtuals: true, user: req.user }),
         }))
-    .catch(next);
+    .catch(next)
 }
 
 module.exports = controller({
