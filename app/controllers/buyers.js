@@ -9,7 +9,8 @@ const setUser = require('./concerns/set-current-user');
 const setModel = require('./concerns/set-mongoose-model');
 
 const index = (req, res, next) => {
-  Buyer.find()
+  let owner = {_owner: req.user._id }
+  Buyer.find(owner)
     .then(buyers => res.json({
       buyers: buyers.map((e) =>
         e.toJSON({ virtuals: true, user: req.user })),
