@@ -2,7 +2,7 @@
 
 API="http://localhost:4741"
 URL_PATH="/buyers"
-TOKEN="n7y8wHSlCEF6NDJH44h5rkGuxSYcu7yuhhkON+BrU7Y=--iZt/DeTv9pE1cXV9OFFxvbDaM43tpfRl8xqk4ZQ2vIo="
+TOKEN="lYhQw2KiKU3zNZVP0MLHkMyix41TYW11XZ2Kk/UV8Dc=--dWY/cNKuhqs619o30eeKERMAJExlQG6ssRXbkcKP/rs="
 
 curl "${API}${URL_PATH}" \
  --include \
@@ -12,7 +12,7 @@ curl "${API}${URL_PATH}" \
  --data '{
    "buyer": {
      "cart": [{
-       "quantity": "4",
+       "quantity": "5",
        "idNum": "1",
        "purchased": "true"
      }]
