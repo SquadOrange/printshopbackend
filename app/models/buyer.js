@@ -44,7 +44,7 @@ const buyerSchema = new mongoose.Schema({
 buyerSchema.virtual('cost').get(function length() {
   let total = 0
   for (let i = 0; i < this.cart.length; i++){
-  if (this.cart[i].purchased = 'false') {
+  if (this.cart[i].purchased === false) {
   total += this.cart[i].quantity
 }
 }
