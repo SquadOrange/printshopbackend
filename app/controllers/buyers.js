@@ -1,12 +1,32 @@
-'use strict';
+'use strict'
 
-const controller = require('lib/wiring/controller');
-const models = require('app/models');
-const Buyer = models.buyer;
+const controller = require('lib/wiring/controller')
+const models = require('app/models')
+const Buyer = models.buyer
 
-const authenticate = require('./concerns/authenticate');
-const setUser = require('./concerns/set-current-user');
-const setModel = require('./concerns/set-mongoose-model');
+const authenticate = require('./concerns/authenticate')
+const setUser = require('./concerns/set-current-user')
+const setModel = require('./concerns/set-mongoose-model')
+
+const pay = (req, res, next)  => {
+  let amount = 500
+  stripe.customers.create({
+    email: req.body.email,
+    card: req.body.id
+  })
+  .then(customer =>
+    stripe.charges.create({
+      amount,
+      description: "Sample Charge",
+      currency: "usd",
+      customer: customer.id
+    }))
+  .then(charge => res.send(charge))
+  .catch(err => {
+    console.log("Error:", err)
+    res.status(500).send({error: "Purchase Failed"})
+  })
+}
 
 const index = (req, res, next) => {
   let owner = {_owner: req.user._id }
@@ -15,12 +35,12 @@ const index = (req, res, next) => {
       buyers: buyers.map((e) =>
         e.toJSON({ virtuals: true, user: req.user })),
     }))
-    .catch(next);
-};
+    .catch(next)
+}
 
 const update = (req, res, next) => {
 
-  delete req.body._owner;  // disallow owner reassignment.
+  delete req.body._owner  // disallow owner reassignment.
 
   let owner = {_owner: req.user._id }
   Buyer.findOne(owner, { cart: { $elemMatch: {idNum: req.body.buyer.cart[0].idNum}}})
@@ -50,7 +70,7 @@ const update = (req, res, next) => {
 const create = (req, res, next) => {
   let buyer = Object.assign(req.body.buyer, {
     _owner: req.user._id,
-  });
+  })
   Buyer.create(buyer)
     .then(buyer =>
       res.status(201)
@@ -62,6 +82,7 @@ const create = (req, res, next) => {
 
 module.exports = controller({
   index,
+  pay,
   // show,
   create,
   update
@@ -71,4 +92,4 @@ module.exports = controller({
   { method: authenticate, except: ['index', 'show', 'update'] },
   { method: setModel(Buyer), only: ['show'] },
   { method: setModel(Buyer, { forUser: true }), only: ['update', 'destroy'] },
-], });
+], })
