@@ -10,6 +10,7 @@ const setModel = require('./concerns/set-mongoose-model')
 
 const pay = (req, res, next)  => {
   let amount = 500
+  console.log('at pay req is ', req)
   stripe.customers.create({
     email: req.body.email,
     card: req.body.id
@@ -89,7 +90,7 @@ module.exports = controller({
   // destroy
 }, { before: [
   { method: setUser, only: ['index', 'show', 'update'] },
-  { method: authenticate, except: ['index', 'show', 'update'] },
+  { method: authenticate, except: ['index', 'show', 'update', 'pay'] },
   { method: setModel(Buyer), only: ['show'] },
   { method: setModel(Buyer, { forUser: true }), only: ['update', 'destroy'] },
 ], })
