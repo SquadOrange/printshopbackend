@@ -3,9 +3,24 @@ require('dotenv').load({
   silent: process.env.NODE_ENV === 'production', // don't log missing .env
 });
 
+const keyPublishable = process.env.PUBLISHABLE_KEY;
+const keySecret = process.env.SUPER_SECRET_KEY;
+
+// const express = require("express");
+const stripe = require('stripe')(keySecret);
+// commented out due to server errors see lines 21 + 22, also
+// const bodyParser = require('body-parser');
+
+// const app = express();
+// app.use(express.static("public"));
+
 const express = require('express');
 const app = express();
 const middleware = require('app/middleware');
+
+// below two lines were moved from above (stripe)
+// app.use(bodyParser.urlencoded({extended: false}));
+// app.use(bodyParser.json());
 
 app.set('root', __dirname);
 
