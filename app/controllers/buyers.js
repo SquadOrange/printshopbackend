@@ -10,21 +10,23 @@ const setModel = require('./concerns/set-mongoose-model')
 
 const pay = (req, res, next)  => {
   let amount = 500
-  console.log('at pay req is ', req)
+  console.log('at pay req email and id card it', req.body.id, req.body.email)
   stripe.customers.create({
     email: req.body.email,
     card: req.body.id
   })
-  .then(customer =>
+  .then(customer => {
+    console.log('at then at customer', customer)
     stripe.charges.create({
       amount,
       description: "Sample Charge",
       currency: "usd",
       customer: customer.id
-    }))
+    })
+    })
   .then(charge => res.send(charge))
   .catch(err => {
-    console.log("Error:", err)
+    console.log("We are reached he catch, Error:", err)
     res.status(500).send({error: "Purchase Failed"})
   })
 }
