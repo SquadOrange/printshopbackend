@@ -51,6 +51,28 @@ buyerSchema.virtual('cost').get(function length() {
   return total * 100
 });
 
+buyerSchema.virtual('cartHas').get(function length() {
+  const cartHas = []
+  for (let i = 0; i < this.cart.length; i++){
+  if (this.cart[i].purchased === false && this.cart[i].quantity > 0) {
+  cartHas.push(this.cart[i])
+}
+}
+  return cartHas
+});
+
+buyerSchema.virtual('alreadyPurchased').get(function length() {
+  const purchasedHistory = []
+  for (let i = 0; i < this.cart.length; i++){
+  if (this.cart[i].purchased === true && this.cart[i].quantity > 0) {
+  purchasedHistory.push(this.cart[i])
+}
+}
+  return purchasedHistory
+});
+
+
+
 const Buyer = mongoose.model('Buyer', buyerSchema);
 
 module.exports = Buyer;
