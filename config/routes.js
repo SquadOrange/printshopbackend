@@ -10,6 +10,7 @@ module.exports = require('lib/wiring/routes')
 // standards RESTful routes
 .resources('examples')
 
+// .resources('charges', { only: ['create']})
 .post('/charge', 'buyers#pay')
 .resources('buyers')
 
