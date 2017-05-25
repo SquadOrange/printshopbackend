@@ -8,6 +8,13 @@ const authenticate = require('./concerns/authenticate')
 const setUser = require('./concerns/set-current-user')
 const setModel = require('./concerns/set-mongoose-model')
 
+const keyPublishable = process.env.PUBLISHABLE_KEY;
+const keySecret = process.env.SUPER_SECRET_KEY;
+
+const express = require("express");
+const stripe = require("stripe")(keySecret);
+const bodyParser = require("body-parser");
+
 const pay = (req, res, next)  => {
   let amount = 500
   console.log('at pay req email and id card it', req.body.id, req.body.email)
@@ -92,7 +99,7 @@ module.exports = controller({
   // destroy
 }, { before: [
   { method: setUser, only: ['index', 'show', 'update'] },
-  { method: authenticate, except: ['index', 'show', 'update', 'pay'] },
+  { method: authenticate, except: ['index', 'show', 'update'] },
   { method: setModel(Buyer), only: ['show'] },
   { method: setModel(Buyer, { forUser: true }), only: ['update', 'destroy'] },
 ], })
