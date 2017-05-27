@@ -10,8 +10,10 @@ module.exports = require('lib/wiring/routes')
 // standards RESTful routes
 .resources('examples')
 
-// .resources('charges', { only: ['create']})
+.resources('charges', { only: ['create']})
+// old stripe route, needs to be commented out.
 .post('/charge', 'buyers#pay')
+.resources('prints')
 .resources('buyers')
 
 
