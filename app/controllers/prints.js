@@ -32,34 +32,11 @@ const index = (req, res, next) => {
 }
 
 const update = (req, res, next) => {
-
-  delete req.body._owner  // disallow owner reassignment.
-
-  let owner = {_owner: req.user._id }
-  Print.findOne(owner, { cart: { $elemMatch: {idNum: req.body.print.cart[0].idNum}}})
-  .then(object => {
-    console.log('object is', object)
-    if (object.cart.length === 0) {
-      req.print.update({'$push': {cart: req.body.print.cart[0]}})
-      .then(response => console.log('after push it says', response))
-        .then((prints) => res.sendStatus(201))
-        .then(console.log('Cart newly updated!'))
-        .catch(next)
-    }
-    else {
-      const idNum = object.cart[0].idNum
-      req.print.update(
-        {'$pull': {cart: { idNum: req.body.print.cart[0].idNum}}}
-      )
-      .then(response => console.log('after pull it says', response))
-      req.print.update({'$push': {cart: req.body.print.cart[0]}})
-      .then(response => console.log('after push it says', response))
-      .then(res.sendStatus(201))
-      .catch(next)
-      }
-    }
-  )}
-
+  delete req.body._owner;  // disallow owner reassignment.
+  req.print.update(req.body.print)
+    .then(() => res.sendStatus(204))
+    .catch(next);
+}
 
 module.exports = controller({
   index,
@@ -68,8 +45,8 @@ module.exports = controller({
   update
   // destroy
 }, { before: [
-  { method: setUser, only: ['index', 'show', 'update'] },
-  { method: authenticate, except: ['index', 'show', 'update'] },
+  { method: setUser, only: ['index', 'show'] },
+  { method: authenticate, except: ['index', 'show'] },
   { method: setModel(Print), only: ['show'] },
   { method: setModel(Print, { forUser: true }), only: ['update', 'destroy'] },
 ], })
