@@ -33,7 +33,10 @@ const create = (req, res, next)  => {
       customer: customer.id
     })
     })
-  .then(charge => res.send(charge))
+  .then(charge => {
+    res.send(charge)
+    console.log('charge is', charge)
+  })
   .catch(err => {
     console.log("We are reached he catch, Error:", err)
     res.status(500).send({error: "Purchase Failed"})
@@ -44,8 +47,8 @@ const create = (req, res, next)  => {
 module.exports = controller({
   create
 }, { before: [
-  { method: setUser, only: ['index', 'show', 'update'] },
-  { method: authenticate, except: ['index', 'show', 'update'] },
+  { method: setUser, only: ['index', 'show'] },
+  { method: authenticate, except: ['index', 'show',] },
   { method: setModel(Charge), only: ['show'] },
   { method: setModel(Charge, { forUser: true }), only: ['update', 'destroy'] },
 ], })
