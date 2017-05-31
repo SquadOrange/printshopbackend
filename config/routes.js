@@ -12,7 +12,8 @@ module.exports = require('lib/wiring/routes')
 
 .resources('charges', { only: ['create']})
 // old stripe route, needs to be commented out.
-.post('/charge', 'buyers#pay')
+// .post('/charge', 'buyers#pay')
+.get('/purchased', 'prints#indexPastPurchases')
 .resources('prints')
 .resources('buyers')
 

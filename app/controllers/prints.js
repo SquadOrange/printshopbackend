@@ -32,6 +32,17 @@ const index = (req, res, next) => {
     .catch(next)
 }
 
+const indexPastPurchases = (req, res, next) => {
+  let owner = {_owner: req.user._id }
+  let purchased = {purchased: true}
+  Print.find(owner, purchased)
+    .then(prints => res.json({
+      prints: prints.map((e) =>
+        e.toJSON({ virtuals: true, user: req.user })),
+    }))
+    .catch(next)
+}
+
 const update = (req, res, next) => {
   delete req.body._owner;  // disallow owner reassignment.
   req.print.update(req.body.print)
@@ -47,13 +58,13 @@ const destroy = (req, res, next) => {
 
 module.exports = controller({
   index,
-  // show,
+  indexPastPurchases,
   create,
   update,
   destroy,
 }, { before: [
-  { method: setUser, only: ['index', 'show'] },
-  { method: authenticate, except: ['index', 'show'] },
+  { method: setUser, only: ['index', 'indexPastPurchases', 'show'] },
+  { method: authenticate, except: ['index', 'indexPastPurchases','show'] },
   { method: setModel(Print), only: ['show'] },
   { method: setModel(Print, { forUser: true }), only: ['update', 'destroy'] },
 ], })
