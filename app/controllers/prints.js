@@ -23,7 +23,8 @@ const create = (req, res, next) => {
 
 const index = (req, res, next) => {
   let owner = {_owner: req.user._id }
-  Print.find(owner)
+  let purchased = {purchased: false}
+  Print.find(owner, purchased)
     .then(prints => res.json({
       prints: prints.map((e) =>
         e.toJSON({ virtuals: true, user: req.user })),
