@@ -19,7 +19,8 @@ const bodyParser = require("body-parser");
 
 const create = (req, res, next)  => {
   let amount = 500
-  console.log('req is:', req)
+  console.log('req is: ', req.body)
+  console.log('amount is: ', req.body.amount)
   console.log('at pay req email and id card it', req.body.id, req.body.email)
   stripe.customers.create({
     email: req.body.email,
@@ -28,7 +29,7 @@ const create = (req, res, next)  => {
   .then(customer => {
     console.log('at then at customer', customer)
     stripe.charges.create({
-      amount,
+      amount: req.body.amount,
       description: "Sample Charge",
       currency: "usd",
       customer: customer.id
