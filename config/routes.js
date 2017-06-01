@@ -16,7 +16,7 @@ module.exports = require('lib/wiring/routes')
 .get('/purchased', 'prints#indexPastPurchases')
 .get('/purchase-before-sold', 'prints#indexBeforePurchase')
 
-.patch('/sold', 'prints#updateToPurchased')
+.get('/sold', 'prints#updateToPurchased')
 
 .resources('prints')
 // .resources('buyers')

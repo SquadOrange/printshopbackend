@@ -44,21 +44,17 @@ const indexPastPurchases = (req, res, next) => {
 }
 
 const indexBeforePurchase = (req, res, next) => {
-  let owner = {_owner: req.user._id }
-  // let purchased = {purchased: true}
-  Print.find(owner)
-    .then(prints => res.json({
-      prints: prints.map((e) =>
-        e.toJSON({ virtuals: true, user: req.user })),
-    }))
-      .then(req.prints.update(
-        {'purchased': 'false'},
-        {$set: {'purchased': 'true'}},
-        {'multi': true}
-      ))
-    .catch(next)
+  console.log('did it get here?')
+  delete req.body._owner;  // disallow owner reassignment.
+  req.prints.update(
+    {"purchased": "false"}, //query, you can also query for email
+    {$set: {"purchased": "true"}},
+    {"multi": true} //for multiple documents
+   )
+    .then(() => res.sendStatus(204))
+    .catch(next);
 }
-// method to updates purchases status
+// method to update purchased status
 // const updateToPurchased = (req, res, next) => {
 //   console.log('did it get here?')
 //   delete req.body._owner;  // disallow owner reassignment.
