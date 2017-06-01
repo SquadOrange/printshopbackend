@@ -43,8 +43,14 @@ const create = (req, res, next)  => {
           "_owner": req.user._id
         })
       })
+      .catch(err => {
+        console.log("Error:", err)
+        res.status(500).send({error: "Purchase Failed"})
+      })
     })
 }
+
+
 
 
 //     , function (err, charge) {
@@ -69,8 +75,8 @@ const create = (req, res, next)  => {
 module.exports = controller({
   create
 }, { before: [
-  { method: setUser, only: ['index', 'show'] },
-  { method: authenticate, except: ['index', 'show',] },
-  { method: setModel(Charge), only: ['show'] },
-  { method: setModel(Charge, { forUser: true }), only: ['update', 'destroy'] },
+  // { method: setUser, only: ['index', 'show'] },
+  { method: authenticate, except: ['index', 'show',] }
+  // { method: setModel(Charge), only: ['show'] },
+  // { method: setModel(Charge, { forUser: true }), only: ['update', 'destroy'] },
 ], })
