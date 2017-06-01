@@ -13,10 +13,10 @@ module.exports = require('lib/wiring/routes')
 .resources('charges', { only: ['create']})
 // old stripe route, needs to be commented out.
 // .post('/charge', 'buyers#pay')
-.get('/purchased', 'prints#indexPastPurchases')
-.get('/purchase-before-sold', 'prints#indexBeforePurchase')
-
-.get('/sold', 'prints#updateToPurchased')
+// .get('/purchased', 'prints#indexPastPurchases')
+// .get('/purchase-before-sold', 'prints#indexBeforePurchase')
+//
+// .get('/sold', 'prints#updateToPurchased')
 
 .resources('prints')
 .resources('orders', {only: ['create', 'index']})
