@@ -19,6 +19,7 @@ module.exports = require('lib/wiring/routes')
 .get('/sold', 'prints#updateToPurchased')
 
 .resources('prints')
+.resources('orders', {only: ['create', 'index']})
 // .resources('buyers')
 
 // users of the app have special requirements
