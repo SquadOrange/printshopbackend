@@ -23,13 +23,49 @@ const create = (req, res, next) => {
 
 const index = (req, res, next) => {
   let owner = {_owner: req.user._id }
-  Print.find(owner)
+  let purchased = {purchased: false}
+  Print.find(owner, purchased)
     .then(prints => res.json({
       prints: prints.map((e) =>
         e.toJSON({ virtuals: true, user: req.user })),
     }))
     .catch(next)
 }
+
+const indexPastPurchases = (req, res, next) => {
+  let owner = {_owner: req.user._id }
+  let purchased = {purchased: true}
+  Print.find(owner, purchased)
+    .then(prints => res.json({
+      prints: prints.map((e) =>
+        e.toJSON({ virtuals: true, user: req.user })),
+    }))
+    .catch(next)
+}
+
+const indexBeforePurchase = (req, res, next) => {
+  console.log('did it get here?')
+  delete req.body._owner;  // disallow owner reassignment.
+  req.print.update(
+    {"purchased": "false"}, //query, you can also query for email
+    {$set: {"purchased": "true"}},
+    {"multi": true} //for multiple documents
+   )
+    .then(() => res.sendStatus(204))
+    .catch(next);
+}
+// method to update purchased status
+// const updateToPurchased = (req, res, next) => {
+//   console.log('did it get here?')
+//   delete req.body._owner;  // disallow owner reassignment.
+//   req.prints.update(
+//     {"purchased": "false"}, //query, you can also query for email
+//     {$set: {"purchased": "true"}},
+//     {"multi": true} //for multiple documents
+//    )
+//     .then(() => res.sendStatus(204))
+//     .catch(next);
+// }
 
 const update = (req, res, next) => {
   delete req.body._owner;  // disallow owner reassignment.
@@ -46,13 +82,15 @@ const destroy = (req, res, next) => {
 
 module.exports = controller({
   index,
-  // show,
+  indexPastPurchases,
+  indexBeforePurchase,
+  // updateToPurchased,
   create,
   update,
   destroy,
 }, { before: [
-  { method: setUser, only: ['index', 'show'] },
-  { method: authenticate, except: ['index', 'show'] },
+  { method: setUser, only: ['index', 'indexPastPurchases', 'show'] },
+  { method: authenticate, except: ['index', 'indexPastPurchases','show'] },
   { method: setModel(Print), only: ['show'] },
-  { method: setModel(Print, { forUser: true }), only: ['update', 'destroy'] },
+  { method: setModel(Print, { forUser: true }), only: ['update', 'updateToPurchased', 'destroy'] },
 ], })
