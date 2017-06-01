@@ -46,7 +46,7 @@ const indexPastPurchases = (req, res, next) => {
 const indexBeforePurchase = (req, res, next) => {
   console.log('did it get here?')
   delete req.body._owner;  // disallow owner reassignment.
-  req.prints.update(
+  req.print.update(
     {"purchased": "false"}, //query, you can also query for email
     {$set: {"purchased": "true"}},
     {"multi": true} //for multiple documents
