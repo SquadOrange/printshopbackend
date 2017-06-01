@@ -43,8 +43,7 @@ const indexPastPurchases = (req, res, next) => {
     .catch(next)
 }
 
-// method to updates purchases status
-const updateToPurchased = (req, res, next) => {
+const indexBeforePurchase = (req, res, next) => {
   console.log('did it get here?')
   delete req.body._owner;  // disallow owner reassignment.
   req.print.update(
@@ -55,7 +54,18 @@ const updateToPurchased = (req, res, next) => {
     .then(() => res.sendStatus(204))
     .catch(next);
 }
-
+// method to update purchased status
+// const updateToPurchased = (req, res, next) => {
+//   console.log('did it get here?')
+//   delete req.body._owner;  // disallow owner reassignment.
+//   req.prints.update(
+//     {"purchased": "false"}, //query, you can also query for email
+//     {$set: {"purchased": "true"}},
+//     {"multi": true} //for multiple documents
+//    )
+//     .then(() => res.sendStatus(204))
+//     .catch(next);
+// }
 
 const update = (req, res, next) => {
   delete req.body._owner;  // disallow owner reassignment.
@@ -73,7 +83,8 @@ const destroy = (req, res, next) => {
 module.exports = controller({
   index,
   indexPastPurchases,
-  updateToPurchased,
+  indexBeforePurchase,
+  // updateToPurchased,
   create,
   update,
   destroy,
