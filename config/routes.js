@@ -14,6 +14,7 @@ module.exports = require('lib/wiring/routes')
 // old stripe route, needs to be commented out.
 // .post('/charge', 'buyers#pay')
 .get('/purchased', 'prints#indexPastPurchases')
+.get('/purchase-before-sold', 'prints#indexBeforePurchase')
 
 .patch('/sold', 'prints#updateToPurchased')
 
