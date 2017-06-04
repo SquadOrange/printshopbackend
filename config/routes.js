@@ -4,11 +4,10 @@ module.exports = require('lib/wiring/routes')
 
 .root('root#root')
 
-.resources('examples')
-
 .resources('charges', { only: ['create']})
 
 .resources('prints')
+
 .resources('orders', {only: ['create', 'index']})
 
 .post('/sign-up', 'users#signup')

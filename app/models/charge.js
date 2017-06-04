@@ -1,7 +1,6 @@
 'use strict';
 
 const mongoose = require('mongoose');
-// Need to update chage schema
 
 const chargeSchema = new mongoose.Schema({
   stripeToken: {
