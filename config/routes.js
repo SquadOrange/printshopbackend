@@ -2,32 +2,17 @@
 
 module.exports = require('lib/wiring/routes')
 
-// create routes
-
-// what to run for `GET /`
 .root('root#root')
 
-// standards RESTful routes
-.resources('examples')
-
 .resources('charges', { only: ['create']})
-// old stripe route, needs to be commented out.
-// .post('/charge', 'buyers#pay')
-// .get('/purchased', 'prints#indexPastPurchases')
-// .get('/purchase-before-sold', 'prints#indexBeforePurchase')
-//
-// .get('/sold', 'prints#updateToPurchased')
 
 .resources('prints')
-.resources('orders', {only: ['create', 'index']})
-// .resources('buyers')
 
-// users of the app have special requirements
+.resources('orders', {only: ['create', 'index']})
+
 .post('/sign-up', 'users#signup')
 .post('/sign-in', 'users#signin')
 .delete('/sign-out/:id', 'users#signout')
 .patch('/change-password/:id', 'users#changepw')
 .resources('users', { only: ['index', 'show'] })
-
-// all routes created
 ;
